@@ -2,36 +2,29 @@ name: Build Flutter APK
 
 on:
   push:
-    branches: [main]  # هر وقت به main پوش شد
+    branches: [main]
 
 jobs:
-  build-apk:
+  build:
     name: Build APK
     runs-on: ubuntu-latest
 
     steps:
-      # 1. دریافت سورس کد
       - uses: actions/checkout@v3
 
-      # 2. نصب Flutter
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.35.6'
 
-      # 3. نصب dependencies
       - name: Install dependencies
         run: flutter pub get
-        working-directory: ./temp_monitor
 
-      # 4. ساخت APK
       - name: Build APK
         run: flutter build apk --release
-        working-directory: ./temp_monitor
 
-      # 5. آپلود APK به عنوان artifact
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
-          name: temp_monitor-release
-          path: ./temp_monitor/build/app/outputs/flutter-apk/app-release.apk
+          name: app-release
+          path: build/app/outputs/flutter-apk/app-release.apk
